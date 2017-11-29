@@ -18,7 +18,7 @@ func (m *Module) OnInit() {
 	m.Skeleton = skeleton
 	InitGameTables()
 	InitGameLobby()
-	InitRooms()
+	//InitRooms()
 
 }
 

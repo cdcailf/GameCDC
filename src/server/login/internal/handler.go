@@ -1,13 +1,13 @@
 package internal
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"github.com/name5566/leaf/gate"
+	"github.com/name5566/leaf/log"
 	"reflect"
 	"server/game"
 	"server/msg"
-  "crypto/md5"
-	"encoding/hex"
-	"github.com/name5566/leaf/log"
 )
 
 func handleMsg(m interface{}, h interface{}) {
@@ -31,22 +31,22 @@ func handleAuth(args []interface{}) {
 	data := []byte(m.Passward)
 	var hash = md5.Sum(data)
 	password := hex.EncodeToString(hash[:])
-	if nil == account{
-	//not having this account,creat account
-		newAccount := creatAccountByAccountIDAndPassword(m.Account,password)
-		if nil != newAccount{
+	if nil == account {
+		//not having this account,creat account
+		newAccount := creatAccountByAccountIDAndPassword(m.Account, password)
+		if nil != newAccount {
 			game.ChanRPC.Go("CreatePlayer", a, newAccount.PlayerID)
 			game.ChanRPC.Go("UserLogin", a, newAccount.PlayerID)
 		} else {
-			log.Debug("create account error ",m.Account)
+			log.Debug("create account error ", m.Account)
 			a.WriteMsg(&msg.LoginFaild{Code: msg.LoginFaild_InnerError})
 		}
 
 	} else {
-	// match password
+		// match password
 		if password == account.Password {
 			game.ChanRPC.Go("UserLogin", a, account.PlayerID)
-		}else {
+		} else {
 			a.WriteMsg(&msg.LoginFaild{Code: msg.LoginFaild_AccountOrPasswardNotMatch})
 		}
 	}
