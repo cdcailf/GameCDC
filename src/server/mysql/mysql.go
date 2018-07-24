@@ -13,7 +13,7 @@ var (
 
 func OpenDB() {
 	fmt.Println("mysqldb->open db")
-	db1, err := gorm.Open("mysql", "root:urock12345@tcp(192.168.107.84:3306)/game?parseTime=true")
+	db1, err := gorm.Open("mysql", "xxx:xxx@tcp(xxx.xxx.xxx.xxx:3306)/game?parseTime=true")
 	if err != nil {
 		panic("connect db error")
 	}
